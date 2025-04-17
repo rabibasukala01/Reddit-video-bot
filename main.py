@@ -24,7 +24,7 @@ from video_creation.background import (
 from video_creation.final_video import make_final_video
 from video_creation.screenshot_downloader import get_screenshots_of_reddit_posts
 from video_creation.voices import save_text_to_mp3
-from uploads import tiktok,youtube
+from uploads import tiktok, youtube
 
 __VERSION__ = "3.3.0"
 
@@ -60,23 +60,25 @@ def main(POST_ID=None) -> None:
     make_final_video(number_of_comments, length, reddit_object, bg_config)
 
     # uploads
-    viddata='./video_creation/data/videos.json'
-    with open(viddata, 'r') as f:
+    viddata = "./video_creation/data/videos.json"
+    with open(viddata, "r") as f:
         data = json.load(f)
 
     # Now you can use the data
-    title=data[-1]['reddit_title']
-    filename=data[-1]['filename']
-    subreddit=data[-1]['subreddit']
+    title = data[-1]["reddit_title"]
+    filename = data[-1]["filename"]
+    subreddit = data[-1]["subreddit"]
     VIDEO_FILE_PATH = f"./results/{subreddit}/{filename}"
-    
+
     # youtube upload
-    print_step("Uploading to youtube...")
-    TITLE = title
+    print_step(f"Uploading to youtube...with title {title}")
+    TITLE = title[:95] + "..."  # 100 character limit
     DESCRIPTION = title
-    CATEGORY_ID = '24'  # 24 = Entertainment
-    TAGS = ['reddit', 'jokes', 'epic', 'viral']
-    vid_id=youtube.upload_video(VIDEO_FILE_PATH,TITLE,DESCRIPTION,CATEGORY_ID,TAGS)
+    CATEGORY_ID = "24"  # 24 = Entertainment
+    TAGS = ["reddit", "jokes", "epic", "viral"]
+    vid_id = youtube.upload_video(
+        VIDEO_FILE_PATH, TITLE, DESCRIPTION, CATEGORY_ID, TAGS
+    )
 
     # tiktok upload
     print_step("Uploading to tiktok...")
@@ -99,6 +101,7 @@ def shutdown() -> NoReturn:
 
     print("Exiting...")
     sys.exit()
+
 
 def gen():
     ffmpeg_install()
