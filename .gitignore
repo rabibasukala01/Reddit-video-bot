@@ -249,3 +249,6 @@ config.toml
 
 
 config.toml
+*-secrets.json
+cookies.json
+cookies1.json
